@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Test WebSocket</title>
+</head>
+<body>
+	<div id="message">
+		请输入你要袭击的城市：<input id="city" type="text" value="东京"/>
+		<input type="button" value="安拉胡阿克巴" onclick="onStart()"/>
+	</div>
+	<div id="messages"></div>
+	<script type="text/javascript">
+	function onStart(event){
+		var city = document.getElementById("city").value;
+		if(city == ''){
+			alert('袭击目标不能为空');
+			return false;
+		}
+		document.getElementById("messages").innerHTML = "开始向" + city + "市发送威胁信<br/>";
+		webSocket.send(city);
+		return false;
+	}
+	
+	var webSocket = new WebSocket('ws://localhost:8080/Templete_web/boomShakalaka');
+	webSocket.onerror = function(event){
+		alert("袭击失败，原因：" + event.data);
+	}
+	webSocket.onopen = function(event){
+		document.getElementById("messages").innerHTML += "你决定给他们点颜色看看<br/>";
+	};
+	webSocket.onmessage = function(event){
+		document.getElementById("messages").innerHTML += event.data + "<br/>";
+	}
+	</script>
+</body>
+</html>
